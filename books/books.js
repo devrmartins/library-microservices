@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const Book = require("./Book");
 const app = express();
 
 mongoose.connect("mongodb+srv://admin:45m89zv1.rbm@cluster0.aybul.mongodb.net/booksservice?retryWrites=true&w=majority",{
@@ -11,6 +12,17 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
     res.json("Books main endpoint");
+});
+
+app.post("/book", async (req, res) => {
+
+    const { title, author, numberPages, publisher } = req.body;
+
+    const book = new Book({ title, author, numberPages, publisher });
+    await book.save();
+    
+    console.log(book);
+    return res.status(201).json();
 });
 
 app.listen(4545, () => {
