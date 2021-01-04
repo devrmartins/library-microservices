@@ -10,8 +10,15 @@ mongoose.connect("mongodb+srv://admin:45m89zv1.rbm@cluster0.aybul.mongodb.net/bo
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.json("Books main endpoint");
+app.get('/book', async (req, res) => {
+    const books = await Book.find();
+    return res.json(books);
+});
+
+app.get('/book/:id', async (req, res) => {
+    const { id } = req.params;
+    const book = await Book.findById(id);
+    return res.json(book);
 });
 
 app.post("/book", async (req, res) => {
